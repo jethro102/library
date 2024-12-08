@@ -69,37 +69,11 @@ Ensure the following prerequisites are installed:
 
 | Method | Endpoint                         | Description                          |
 |--------|----------------------------------|--------------------------------------|
-| POST   | `/user/register`                 | Register a new user.                 |
-| POST   | `/user/login`                    | Log in and receive a JWT token.      |
-| POST   | `/user/reset-password`           | Initiate password reset.             |
-| PUT    | `/user/update-profile`           | Update user details.                 |
-| DELETE | `/user/delete-account`           | Delete user account (Admin only).    |
-
----
-
-### **Book Endpoints**
-
-| Method | Endpoint                         | Description                          |
-|--------|----------------------------------|--------------------------------------|
-| POST   | `/books`                         | Add a new book.                      |
-| GET    | `/books`                         | Retrieve all books with filters.     |
-| GET    | `/books/{id}`                    | Retrieve specific book details.      |
-| PUT    | `/books/{id}`                    | Update book details.                 |
-| DELETE | `/books/{id}`                    | Delete a book.                       |
-| POST   | `/books/bulk`                    | Add multiple books at once.          |
-
----
-
-### **Author Endpoints**
-
-| Method | Endpoint                         | Description                          |
-|--------|----------------------------------|--------------------------------------|
-| POST   | `/authors`                       | Add a new author.                    |
-| GET    | `/authors`                       | Retrieve all authors.                |
-| GET    | `/authors/{id}`                  | Retrieve specific author details.    |
-| PUT    | `/authors/{id}`                  | Update author profile.               |
-| DELETE | `/authors/{id}`                  | Delete an author.                    |
-| GET    | `/authors/popular`               | Retrieve the most popular authors.   |
+| POST   | `/user`                          | Register a new user.                 |
+| POST   | `/login`                         | Log in and receive a JWT token.      |
+| POST   | `/userupdate`                    | Initiate user update profile.        |
+| DELETE | `/userdelete`                    | initiate user deletion.              |
+| GET    | `/displayalluser`                | Display all User Account             |
 
 ---
 
@@ -107,75 +81,210 @@ Ensure the following prerequisites are installed:
 
 | Method | Endpoint                         | Description                          |
 |--------|----------------------------------|--------------------------------------|
-| POST   | `/relationships`                 | Add a book-author relationship.      |
-| DELETE | `/relationships/{id}`            | Remove a book-author relationship.   |
-| GET    | `/relationships`                 | View all relationships.              |
+| POST   | `/add`                           | Add a book-author relationship.      |
+| DELETE | `/delete/{id}`                   | Remove a book-author relationship.   |
+| GET    | `/get`                           | View all relationships.              |
+| PUT    | `/update/{id}`                   | update book-author relationship.     |
 
 ---
 
 ## 🚀 **Sample API Usage**
 
 ### **Register a User**
-- **Endpoint**: `/user/register`
+- **Endpoint**: `http://127.0.0.1/newlibrary/public/user`
 - **Request Body**:
   ```json
   {
-    "username": "John David Padua",
-    "password": "securepassword123",
-    "email": "johndavid@example.com"
+  "username":"dianee",
+  "password":"novencido123"
+  
   }
   ```
 - **Response**:
   ```json
   {
-    "status": "success",
-    "message": "User registered successfully!"
+  "status": "registration success, proceed to login"
+  }
+  ```
+
+
+---
+
+### **user login**
+- **Endpoint**: `http://127.0.0.1/newlibrary/public/login`
+- **Request Body**:
+  ```json
+  {
+    "username":"dianee",
+  "password":"novencido123"
+  
+  }
+  ```
+- **Response**:
+  ```json
+  {
+      "status": "Login Success",
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGlicmFyeS5vcmciLCJhdWQiOiJodHRwOi8vbGlicmFyeS5jb20iLCJpYXQiOjE3MzM2NTgwNjgsImRhdGEiOnsidXNlcmlkIjoxMH19.14MlphuCAqiMuSGXo5qY1rWmRceYE0TAiUVf6GomhX8"
   }
   ```
 
 ---
 
-### **Add a Book**
-- **Endpoint**: `/books`
+### **display all user**
+- **Endpoint**: `http://127.0.0.1/newlibrary/public/displayalluser`
 - **Headers**: `Authorization: Bearer <JWT>`
 - **Request Body**:
   ```json
   {
-    "title": "System Integration II",
-    "author_ids": [12, 15],
-    "genre": "Technology",
-    "publication_year": 2023
+  
+  }
+  ```
+- **Response**:
+  ```json
+  {
+     "status": "success",
+  "data": [
+    {
+      "userid": 1,
+      "username": "john123"
+    },
+    {
+      "userid": 2,
+      "username": "jaliyah"
+    },
+    {
+      "userid": 6,
+      "username": "John David"
+    },
+    {
+      "userid": 7,
+      "username": "bea"
+    },
+    {
+      "userid": 8,
+      "username": "diane"
+    },
+    {
+      "userid": 10,
+      "username": "dianee"
+    }
+  ]
+  }
+  ```
+---
+### **user update**
+- **Endpoint**: `http://127.0.0.1/newlibrary/public/userupdate/6`
+- **Request Body**:
+  ```json
+  {
+
+  "username":"Princess diane",
+  "password":"novencidoo"
+
+  }
+  ```
+- **Response**:
+  ```json
+  {
+      "status": "success",
+  "message": "User updated successfully"
+  }
+  ```
+---
+### **user delete**
+- **Endpoint**: `http://127.0.0.1/newlibrary/public/userdelete/7`
+- **Request Body**:
+  ```json
+  {
+
   }
   ```
 - **Response**:
   ```json
   {
     "status": "success",
-    "message": "Book added successfully!"
+  "message": "User deleted successfully."
   }
   ```
-
 ---
 
-### **Fetch Popular Authors**
-- **Endpoint**: `/authors/popular`
-- **Headers**: `Authorization: Bearer <JWT>`
+### **add books and authors**
+- **Endpoint**: `http://127.0.0.1/newlibrary/public/add`
+- **Request Body**:
+  ```json
+  {
+    "book":"diane literature 3",
+  "author":"princess diane"
+  }
+  ```
 - **Response**:
   ```json
   {
-    "status": "success",
-    "data": [
-      {
-        "author_id": 12,
-        "name": "John David Padua",
-        "popular_books": ["System Integration II"]
-      }
-    ]
+    "status": "Book added",
+  "Here's your token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGlicmFyeS5vcmciLCJhdWQiOiJodHRwOi8vbGlicmFyeS5jb20iLCJpYXQiOjE3MzM2NTg3NTcsImRhdGEiOnsidXNlcmlkIjoxMH19.RLODmonzplIByILCrRqIKYBMctM8c6OmfCE68XHsB14"
   }
   ```
-
 ---
+### **delete books and authors**
+- **Endpoint**: `http://127.0.0.1/newlibrary/public/delete/5`
+- **Request Body**:
+  ```json
+  {
+  
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "status": "Delete success",
+  "Here's your token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGlicmFyeS5vcmciLCJhdWQiOiJodHRwOi8vbGlicmFyeS5jb20iLCJpYXQiOjE3MzM2NTg4OTIsImRhdGEiOnsidXNlcmlkIjoxMH19.WZS7y75vzvyV9nAA-0fM8WUn9qAN4zBwoLd9mgbohMo"
+  }
+  ```
+---
+### **display all books and authors**
+- **Endpoint**: `http://127.0.0.1/newlibrary/public/booksauthors`
+- **Request Body**:
+  ```json
+  {
+  
+  }
+  ```
+- **Response**:
+  ```json
+  {
+  
+  "status": "success",
+  "data": [
+    {
+      "book_id": 2,
+      "book_title": "Dance Choreography",
+      "author_name": "Jaliyah Iyane"
+    },
+    {
+      "book_id": 3,
+      "book_title": "david book",
+      "author_name": "john david padua"
+    },
+    {
+      "book_id": 4,
+      "book_title": "diane literature",
+      "author_name": "princess diane"
+    },
+    {
+      "book_id": 6,
+      "book_title": "diane literature 2",
+      "author_name": "princess diane"
+    },
+    {
+      "book_id": 7,
+      "book_title": "diane literature 3",
+      "author_name": "princess diane"
+    }
+  ]
 
+  }
+  ```
+---
 ## 📊 **Future Enhancements**
 
 - **AI-Powered Recommendations**: Suggest books and authors to users based on borrowing patterns.
