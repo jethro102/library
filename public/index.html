@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group button {
+            width: 100%;
+            padding: 8px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Library Management System</h1>
+
+        <div id="register">
+            <h2>Register</h2>
+            <div class="form-group">
+                <label for="reg-username">Username</label>
+                <input type="text" id="reg-username" />
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Password</label>
+                <input type="password" id="reg-password" />
+            </div>
+            <button class="btn" onclick="registerUser()">Register</button>
+        </div>
+
+        <div id="login">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" />
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" />
+            </div>
+            <button class="btn" onclick="loginUser()">Login</button>
+        </div>
+
+        <div id="update">
+            <h2>Update User</h2>
+            <div class="form-group">
+                <label for="update-id">User ID</label>
+                <input type="text" id="update-id" />
+            </div>
+            <div class="form-group">
+                <label for="update-username">New Username</label>
+                <input type="text" id="update-username" />
+            </div>
+            <div class="form-group">
+                <label for="update-password">New Password</label>
+                <input type="password" id="update-password" />
+            </div>
+            <button class="btn" onclick="updateUser()">Update User</button>
+        </div>
+
+        <div id="delete">
+            <h2>Delete User</h2>
+            <div class="form-group">
+                <label for="delete-id">User ID</label>
+                <input type="text" id="delete-id" />
+            </div>
+            <button class="btn" onclick="deleteUser()">Delete User</button>
+        </div>
+
+        <div id="view">
+            <h2>View All Users</h2>
+            <button class="btn" onclick="viewAllUsers()">View Users</button>
+        </div>
+
+        <div class="result" id="result">
+            <!-- API responses will appear here -->
+        </div>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost/your-api-endpoint';
+
+        function registerUser() {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+
+            fetch(`${apiUrl}/user`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            })
+                .then(response => response.json())
+                .then(data => displayResult(data));
+        }
+
+        function loginUser() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            fetch(`${apiUrl}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            })
+                .then(response => response.json())
+                .then(data => displayResult(data));
+        }
+
+        function updateUser() {
+            const id = document.getElementById('update-id').value;
+            const username = document.getElementById('update-username').value;
+            const password = document.getElementById('update-password').value;
+
+            fetch(`${apiUrl}/userupdate/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            })
+                .then(response => response.json())
+                .then(data => displayResult(data));
+        }
+
+        function deleteUser() {
+            const id = document.getElementById('delete-id').value;
+
+            fetch(`${apiUrl}/userdelete/${id}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => displayResult(data));
+        }
+
+        function viewAllUsers() {
+            fetch(`${apiUrl}/displayall`, { method: 'GET' })
+                .then(response => response.json())
+                .then(data => displayResult(data));
+        }
+
+        function displayResult(data) {
+            document.getElementById('result').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+    </script>
+</body>
+</html>
